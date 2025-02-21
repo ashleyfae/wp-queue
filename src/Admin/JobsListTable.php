@@ -31,8 +31,8 @@ class JobsListTable extends WP_List_Table
         return [
             'action' => esc_html__('Action', 'wp-queue'),
             'status' => esc_html__('Status', 'wp-queue'),
-            'created_at' => esc_html__('Created At', 'wp-queue'),
             'scheduled_for' => esc_html__('Scheduled For', 'wp-queue'),
+            'logs' => esc_html__('Logs', 'wp-queue'),
         ];
     }
 
@@ -66,6 +66,20 @@ class JobsListTable extends WP_List_Table
             case 'created_at' :
             case 'scheduled_for' :
                 return esc_html(sprintf('%s UTC', $item->{$column_name}->format('Y-m-d H:I:s')));
+            case 'logs' :
+                $logs = [
+                    sprintf(__('Created at %s UTC', 'wp-queue'), $item->created_at->format('Y-m-d H:i:s')),
+                ];
+
+                if ($item->started_at) {
+                    $logs[] = sprintf(__('Started processing at %s UTC', 'wp-queue'), $item->started_at->format('Y-m-d H:i:s'));
+                }
+                if ($item->completed_at) {
+                    $logs[] = sprintf(__('Completed at %s UTC', 'wp-queue'), $item->completed_at->format('Y-m-d H:i:s'));
+                }
+                $logs = array_map(fn($log) => '<li>'.$log.'</li>', $logs);
+                return '<ol>'.implode("\n", $logs).'</ol>';
+                break;
         }
     }
 
