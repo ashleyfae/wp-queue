@@ -31,6 +31,7 @@ class JobsListTable extends WP_List_Table
         return [
             'action' => esc_html__('Action', 'wp-queue'),
             'status' => esc_html__('Status', 'wp-queue'),
+            'arguments' => esc_html__('Arguments', 'wp-queue'),
             'scheduled_for' => esc_html__('Scheduled For', 'wp-queue'),
             'logs' => esc_html__('Logs', 'wp-queue'),
         ];
@@ -63,6 +64,12 @@ class JobsListTable extends WP_List_Table
                 return esc_html($item->action);
             case 'status' :
                 return esc_html($item->getStatusDisplayName());
+            case 'arguments' :
+                if ($item->arguments) {
+                    return esc_html(json_encode($item->arguments));
+                } else {
+                    return '&ndash;';
+                }
             case 'created_at' :
             case 'scheduled_for' :
                 return esc_html(sprintf('%s UTC', $item->{$column_name}->format('Y-m-d H:I:s')));
@@ -82,7 +89,6 @@ class JobsListTable extends WP_List_Table
                 }
                 $logs = array_map(fn($log) => '<li>'.$log.'</li>', $logs);
                 return '<ol>'.implode("\n", $logs).'</ol>';
-                break;
         }
     }
 
