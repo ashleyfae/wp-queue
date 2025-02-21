@@ -11,10 +11,22 @@ namespace AshleyFae\WpQueue\Admin;
 
 class JobsPage
 {
-    public static function render(): void
+    public function __construct(
+        protected JobsListTable $jobsListTable
+    )
+    {
+    }
+
+    public function render(): void
     {
         ?>
-        <p>Hi there</p>
+        <div class="wrap">
+            <h1><?php esc_html_e('Queued Jobs', 'wp-queue'); ?></h1>
+
+            <form method="GET" action="">
+                <?php $this->jobsListTable->display(); ?>
+            </form>
+        </div>
         <?php
     }
 }

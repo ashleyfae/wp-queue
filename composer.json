@@ -27,5 +27,8 @@
             "type": "vcs",
             "url": "https://github.com/ashleyfae/laravel-container"
         }
-    ]
+    ],
+    "require-dev": {
+        "php-stubs/wordpress-stubs": "^6.7"
+    }
 }

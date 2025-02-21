@@ -99,4 +99,21 @@ class QueuedJobRepository
             $rows
         );
     }
+
+    public function query(int $limit = 30, int $offset = 0) : array
+    {
+        $rows = DB::get_results(
+            DB::prepare(
+                "SELECT * FROM {$this->table->getTableName()}
+                LIMIT %d, %d",
+                $offset,
+                $limit
+            )
+        );
+
+        return array_map(
+            fn(array $row) => new QueuedJob($row),
+            $rows
+        );
+    }
 }

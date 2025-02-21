@@ -64,11 +64,14 @@ class WpQueue
     {
         add_submenu_page(
             'tools.php',
-            __('Queued Actions', 'wp-queue'),
-            __('Queued Actions', 'wp-queue'),
-            'manage-options',
+            __('Queued Jobs', 'wp-queue'),
+            __('Queued Jobs', 'wp-queue'),
+            'manage_options',
             'queued_options',
-            [JobsPage::class, 'render']
+            static function ()
+            {
+                return WpQueue::instance()->get(JobsPage::class)->render();
+            }
         );
     }
 }
