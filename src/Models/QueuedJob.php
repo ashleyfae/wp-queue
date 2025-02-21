@@ -49,4 +49,14 @@ class QueuedJob extends AbstractModel
         'completed_at',
         'updated_at',
     ];
+
+    public function getStatusDisplayName() : string
+    {
+        return match($this->status) {
+            'completed' => __('Completed', 'wp-queue'),
+            'in_progress' => __('In Progress', 'wp-queue'),
+            'failed' => __('Failed', 'wp-queue'),
+            default => __('Pending', 'wp-queue')
+        };
+    }
 }

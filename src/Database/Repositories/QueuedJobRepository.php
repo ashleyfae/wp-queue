@@ -108,7 +108,8 @@ class QueuedJobRepository
                 LIMIT %d, %d",
                 $offset,
                 $limit
-            )
+            ),
+            ARRAY_A
         );
 
         return array_map(

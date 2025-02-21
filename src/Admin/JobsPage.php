@@ -19,6 +19,7 @@ class JobsPage
 
     public function render(): void
     {
+        $this->jobsListTable->prepare_items();
         ?>
         <div class="wrap">
             <h1><?php esc_html_e('Queued Jobs', 'wp-queue'); ?></h1>

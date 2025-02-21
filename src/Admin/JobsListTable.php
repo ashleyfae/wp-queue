@@ -30,6 +30,9 @@ class JobsListTable extends WP_List_Table
     {
         return [
             'action' => esc_html__('Action', 'wp-queue'),
+            'status' => esc_html__('Status', 'wp-queue'),
+            'created_at' => esc_html__('Created At', 'wp-queue'),
+            'scheduled_for' => esc_html__('Scheduled For', 'wp-queue'),
         ];
     }
 
@@ -40,20 +43,29 @@ class JobsListTable extends WP_List_Table
         ];
     }
 
-    public function column_cb(QueuedJob $object)
+    public function column_cb($item)
     {
         return sprintf(
             '<input type="checkbox" name="%1$s[]" value="%2$s" />',
             $this->_args['singular'].'_id',
-            $object->id
+            $item->id
         );
     }
 
-    public function column_default(QueuedJob $job, $columnName)
+    public function column_default($item, $column_name)
     {
-        switch($columnName) {
+        if (! $item instanceof QueuedJob) {
+            return '';
+        }
+
+        switch($column_name) {
             case 'action' :
-                return esc_html($job->action);
+                return esc_html($item->action);
+            case 'status' :
+                return esc_html($item->getStatusDisplayName());
+            case 'created_at' :
+            case 'scheduled_for' :
+                return esc_html(sprintf('%s UTC', $item->{$column_name}->format('Y-m-d H:I:s')));
         }
     }
 
