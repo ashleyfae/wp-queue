@@ -4,8 +4,41 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e559e447d09c4917289feb6b512114df",
+    "content-hash": "03f39c1ebdc94b616a8e821b1e84e2a4",
     "packages": [
+        {
+            "name": "ashleyfae/laravel-container",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ashleyfae/laravel-container.git",
+                "reference": "3f735848a621bfe6fd4a56211e780314440e2a3c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ashleyfae/laravel-container/zipball/3f735848a621bfe6fd4a56211e780314440e2a3c",
+                "reference": "3f735848a621bfe6fd4a56211e780314440e2a3c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ashleyfae\\LaravelContainer\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Laravel service container.",
+            "support": {
+                "source": "https://github.com/ashleyfae/laravel-container/tree/1.0.1",
+                "issues": "https://github.com/ashleyfae/laravel-container/issues"
+            },
+            "time": "2025-02-21T14:03:03+00:00"
+        },
         {
             "name": "ashleyfae/wp-db",
             "version": "1.1.0",
@@ -44,7 +77,9 @@
     "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": {},
+    "platform": {
+        "php": ">=8.0"
+    },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }

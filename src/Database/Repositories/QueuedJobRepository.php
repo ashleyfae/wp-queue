@@ -67,7 +67,7 @@ class QueuedJobRepository
         );
 
         if ($id = DB::lastInsertId()) {
-            $queuedJob->setId($id);
+            $queuedJob->id = $id;
         }
 
         return $queuedJob;

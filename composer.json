@@ -6,7 +6,10 @@
     "autoload": {
         "psr-4": {
             "AshleyFae\\WpQueue\\": "src/"
-        }
+        },
+        "files": [
+            "init.php"
+        ]
     },
     "authors": [
         {
@@ -16,6 +19,13 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=8.0",
-        "ashleyfae/wp-db": "^1.1.0"
-    }
+        "ashleyfae/wp-db": "^1.1.0",
+        "ashleyfae/laravel-container": "^1.0"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/ashleyfae/laravel-container"
+        }
+    ]
 }
