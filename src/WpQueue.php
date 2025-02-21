@@ -11,14 +11,21 @@ namespace AshleyFae\WpQueue;
 
 use Ashleyfae\LaravelContainer\Container;
 use AshleyFae\WpQueue\Admin\JobsPage;
+use AshleyFae\WpQueue\Components\ComponentInterface;
+use AshleyFae\WpQueue\Cron\CronHandler;
 use AshleyFae\WpQueue\Database\Tables\QueuedJobTable;
+use Exception;
 
-class WpQueue
+class WpQueue implements ComponentInterface
 {
     protected static WpQueue $instance;
     protected static bool $booted = false;
-
     private Container $container;
+
+    /** @var array components loaded on start-up */
+    protected array $components = [
+        CronHandler::class,
+    ];
 
     public function __construct()
     {
@@ -34,12 +41,12 @@ class WpQueue
         return static::$instance;
     }
 
-    public function get(string $abstract) : object
+    public function get(string $abstract): object
     {
         return $this->container->make($abstract);
     }
 
-    public function boot() : void
+    public function boot(): void
     {
         if (static::$booted) {
             return;
@@ -48,14 +55,21 @@ class WpQueue
         add_action('plugins_loaded', [$this, 'createOrUpdateTable']);
         add_action('admin_menu', [$this, 'registerAdminMenu']);
 
+        foreach($this->components as $componentClassName) {
+            $component = $this->get($componentClassName);
+            if ($component instanceof ComponentInterface) {
+                $component->boot();
+            }
+        }
+
         static::$booted = true;
     }
 
-    public function createOrUpdateTable() : void
+    public function createOrUpdateTable(): void
     {
         try {
             (new QueuedJobTable())->maybeUpdateOrCreate();
-        } catch(\Exception $e) {
+        } catch (Exception $e) {
             error_log($e->getMessage());
         }
     }
@@ -68,8 +82,7 @@ class WpQueue
             __('Queued Jobs', 'wp-queue'),
             'manage_options',
             'queued_options',
-            static function ()
-            {
+            static function () {
                 return WpQueue::instance()->get(JobsPage::class)->render();
             }
         );
