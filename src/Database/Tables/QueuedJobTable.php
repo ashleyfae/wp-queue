@@ -11,7 +11,7 @@ namespace AshleyFae\WpQueue\Database\Tables;
 
 use Ashleyfae\WPDB\Tables\AbstractTable;
 
-class QueueTable extends AbstractTable
+class QueuedJobTable extends AbstractTable
 {
     public function getPackageTablePrefix(): string
     {
