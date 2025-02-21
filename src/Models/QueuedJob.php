@@ -9,6 +9,7 @@
 
 namespace AshleyFae\WpQueue\Models;
 
+use AshleyFae\WpQueue\Enums\JobStatus;
 use DateTime;
 
 class QueuedJob extends AbstractModel
@@ -53,9 +54,9 @@ class QueuedJob extends AbstractModel
     public function getStatusDisplayName() : string
     {
         return match($this->status) {
-            'completed' => __('Completed', 'wp-queue'),
-            'in_progress' => __('In Progress', 'wp-queue'),
-            'failed' => __('Failed', 'wp-queue'),
+            JobStatus::Complete => __('Complete', 'wp-queue'),
+            JobStatus::InProgress => __('In Progress', 'wp-queue'),
+            JobStatus::Failed => __('Failed', 'wp-queue'),
             default => __('Pending', 'wp-queue')
         };
     }

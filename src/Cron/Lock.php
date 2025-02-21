@@ -34,7 +34,7 @@ class Lock
             return false;
         }
 
-        return (bool) update_option(static::LOCK_OPTION_NAME, strtotime('now') + static::LOCK_DURATION_SECONDS);
+        return (bool) update_option(static::LOCK_OPTION_NAME, strtotime('now') + static::LOCK_DURATION_SECONDS, false);
     }
 
     public function release(): void

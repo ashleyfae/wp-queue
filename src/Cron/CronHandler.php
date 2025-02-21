@@ -56,7 +56,6 @@ class CronHandler implements ComponentInterface
 
         $this->startedAt = time();
 
-        // @TODO process
         while (! $this->timeExceeded() && ! $this->memoryExceeded()) {
             if (! $this->worker->process()) {
                 // no more jobs

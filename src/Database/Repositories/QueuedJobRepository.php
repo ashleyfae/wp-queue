@@ -87,7 +87,7 @@ class QueuedJobRepository
             DB::prepare(
                 "SELECT * FROM {$this->table->getTableName()}
                 WHERE status = %s
-                AND scheduled_for >= %s
+                AND scheduled_for <= %s
                 LIMIT %d",
                 JobStatus::Pending,
                 (new DateTime('now'))->format('Y-m-d H:i:s'),
@@ -111,7 +111,7 @@ class QueuedJobRepository
             DB::prepare(
                 "SELECT * FROM {$this->table->getTableName()}
                 WHERE status = %s
-                AND scheduled_for >= %s
+                AND scheduled_for <= %s
                 LIMIT 1",
                 JobStatus::Pending,
                 (new DateTime('now'))->format('Y-m-d H:i:s')
@@ -119,7 +119,7 @@ class QueuedJobRepository
             ARRAY_A
         );
 
-        return new QueuedJob($row);
+        return $row ? new QueuedJob($row) : null;
     }
 
     public function query(int $limit = 30, int $offset = 0) : array

@@ -13,6 +13,7 @@ use AshleyFae\WpQueue\Database\Repositories\QueuedJobRepository;
 use AshleyFae\WpQueue\Enums\JobStatus;
 use AshleyFae\WpQueue\Models\QueuedJob;
 use DateTime;
+use Exception;
 
 class Worker
 {
@@ -26,20 +27,20 @@ class Worker
     {
         $nextJob = $this->jobRepository->getNextReadyJob();
         if (! $nextJob) {
-            error_log('No jobs found');
             return false;
         }
 
-        error_log(sprintf('Processing job #%d', $nextJob->id));
         try {
             $this->startJob($nextJob);
 
             do_action($nextJob->action, $nextJob->arguments);
 
             $this->completeJob($nextJob);
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
             $this->handleFailure($nextJob, $e);
         }
+
+        return true;
     }
 
     protected function startJob(QueuedJob $job): void
@@ -58,7 +59,7 @@ class Worker
         $this->jobRepository->save($job);
     }
 
-    protected function handleFailure(QueuedJob $job, \Exception $exception): void
+    protected function handleFailure(QueuedJob $job, Exception $exception): void
     {
         try {
             $job->status = JobStatus::Failed;
@@ -69,7 +70,7 @@ class Worker
             ], JSON_PRETTY_PRINT);
 
             $this->jobRepository->save($job);
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
             error_log($e->getMessage());
         }
     }
