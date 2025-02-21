@@ -11,6 +11,7 @@ namespace AshleyFae\WpQueue\Database\Repositories;
 
 use Ashleyfae\WPDB\DB;
 use AshleyFae\WpQueue\Database\Tables\QueuedJobTable;
+use AshleyFae\WpQueue\Enums\JobStatus;
 use AshleyFae\WpQueue\Models\QueuedJob;
 use DateTime;
 
@@ -85,9 +86,10 @@ class QueuedJobRepository
         $rows = DB::get_results(
             DB::prepare(
                 "SELECT * FROM {$this->table->getTableName()}
-                WHERE status = 'pending'
+                WHERE status = %s
                 AND scheduled_for >= %s
                 LIMIT %d",
+                JobStatus::Pending,
                 (new DateTime('now'))->format('Y-m-d H:i:s'),
                 $number
             ),
@@ -98,6 +100,26 @@ class QueuedJobRepository
             fn(array $row) => new QueuedJob($row),
             $rows
         );
+    }
+
+    /**
+     * Gets the next job to be processed.
+     */
+    public function getNextReadyJob() : ?QueuedJob
+    {
+        $row = DB::get_row(
+            DB::prepare(
+                "SELECT * FROM {$this->table->getTableName()}
+                WHERE status = %s
+                AND scheduled_for >= %s
+                LIMIT 1",
+                JobStatus::Pending,
+                (new DateTime('now'))->format('Y-m-d H:i:s')
+            ),
+            ARRAY_A
+        );
+
+        return new QueuedJob($row);
     }
 
     public function query(int $limit = 30, int $offset = 0) : array

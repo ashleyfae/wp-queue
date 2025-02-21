@@ -17,11 +17,12 @@ class CronHandler implements ComponentInterface
 {
     protected string $cronScheduleId = 'every_minute';
     protected string $cronRunnerActionName = 'ag_wp_queue_process_jobs';
+    protected int $startedAt;
 
     public function __construct(
-        protected Lock $lock
-    )
-    {
+        protected Lock $lock,
+        protected Worker $worker
+    ) {
     }
 
     public function boot(): void
@@ -53,9 +54,47 @@ class CronHandler implements ComponentInterface
             return;
         }
 
+        $this->startedAt = time();
+
         // @TODO process
-        error_log('processing queue');
+        while (! $this->timeExceeded() && ! $this->memoryExceeded()) {
+            if (! $this->worker->process()) {
+                // no more jobs
+                break;
+            }
+        }
 
         $this->lock->release();
+    }
+
+    protected function timeExceeded(): bool
+    {
+        $shouldFinishAt = $this->startedAt + 20; // max 20 seconds
+
+        return time() >= $shouldFinishAt;
+    }
+
+    protected function memoryExceeded(): bool
+    {
+        $memoryLimit   = $this->getMemoryLimit() * 0.8; // 80% of max memory
+        $currentMemory = memory_get_usage(true);
+
+        return $currentMemory >= $memoryLimit;
+    }
+
+    protected function getMemoryLimit(): int
+    {
+        if (function_exists('ini_get')) {
+            $memoryLimit = ini_get('memory_limit');
+        } else {
+            $memoryLimit = '256M';
+        }
+
+        if (! $memoryLimit || -1 == $memoryLimit) {
+            // Unlimited, set to 1GB
+            $memoryLimit = '1000M';
+        }
+
+        return wp_convert_hr_to_bytes($memoryLimit);
     }
 }
