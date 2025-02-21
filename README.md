@@ -1,1 +1,1 @@
-# wp-queue
+# WP Queue

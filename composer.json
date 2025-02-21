@@ -1,0 +1,21 @@
+{
+    "name": "ashleyfae/wp-queue",
+    "description": "Queue processing for WordPress",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "AshleyFae\\WpQueue\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ashley Gibson"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=8.0",
+        "ashleyfae/wp-db": "^1.1.0"
+    }
+}

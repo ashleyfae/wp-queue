@@ -1,0 +1,50 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "e559e447d09c4917289feb6b512114df",
+    "packages": [
+        {
+            "name": "ashleyfae/wp-db",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ashleyfae/wp-db.git",
+                "reference": "9d56377b049e821296f85931dc61181618b2bf8b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ashleyfae/wp-db/zipball/9d56377b049e821296f85931dc61181618b2bf8b",
+                "reference": "9d56377b049e821296f85931dc61181618b2bf8b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ashleyfae\\WPDB\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Wrapper for wpdb.",
+            "support": {
+                "issues": "https://github.com/ashleyfae/wp-db/issues",
+                "source": "https://github.com/ashleyfae/wp-db/tree/1.1.0"
+            },
+            "time": "2025-02-21T12:07:21+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {},
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {},
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
+}
