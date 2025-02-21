@@ -74,6 +74,9 @@ class JobsListTable extends WP_List_Table
                 if ($item->started_at) {
                     $logs[] = sprintf(__('Started processing at %s UTC', 'wp-queue'), $item->started_at->format('Y-m-d H:i:s'));
                 }
+                if ($item->output) {
+                    $logs[] = $item->output;
+                }
                 if ($item->completed_at) {
                     $logs[] = sprintf(__('Completed at %s UTC', 'wp-queue'), $item->completed_at->format('Y-m-d H:i:s'));
                 }
