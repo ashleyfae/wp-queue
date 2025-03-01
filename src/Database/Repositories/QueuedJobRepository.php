@@ -12,6 +12,7 @@ namespace AshleyFae\WpQueue\Database\Repositories;
 use Ashleyfae\WPDB\DB;
 use AshleyFae\WpQueue\Database\Tables\QueuedJobTable;
 use AshleyFae\WpQueue\Enums\JobStatus;
+use AshleyFae\WpQueue\JobQueryBuilder;
 use AshleyFae\WpQueue\Models\QueuedJob;
 use DateTime;
 
@@ -122,15 +123,12 @@ class QueuedJobRepository
         return $row ? new QueuedJob($row) : null;
     }
 
-    public function query(int $limit = 30, int $offset = 0) : array
+    public function query(JobQueryBuilder $queryBuilder) : array
     {
         $rows = DB::get_results(
-            DB::prepare(
-                "SELECT * FROM {$this->table->getTableName()}
-                LIMIT %d, %d",
-                $offset,
-                $limit
-            ),
+            "SELECT * FROM {$this->table->getTableName()}
+                {$queryBuilder->getClausesSql()}
+                {$queryBuilder->getLimitSql()}",
             ARRAY_A
         );
 

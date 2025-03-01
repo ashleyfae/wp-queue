@@ -42,7 +42,7 @@ class QueuedJobTable extends AbstractTable
         completed_at datetime default null,
         updated_at datetime not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
         index status_scheduled_for (status, scheduled_for),
-        index action (action)
+        index action_status (action, status)
         ";
     }
 }

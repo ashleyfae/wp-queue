@@ -10,6 +10,7 @@
 namespace AshleyFae\WpQueue\Admin;
 
 use AshleyFae\WpQueue\Database\Repositories\QueuedJobRepository;
+use AshleyFae\WpQueue\JobQueryBuilder;
 use AshleyFae\WpQueue\Models\QueuedJob;
 use WP_List_Table;
 
@@ -17,7 +18,10 @@ class JobsListTable extends WP_List_Table
 {
     protected int $perPage = 30;
 
-    public function __construct(protected QueuedJobRepository $jobRepository)
+    public function __construct(
+        protected JobQueryBuilder $jobQueryBuilder,
+        protected QueuedJobRepository $jobRepository
+    )
     {
         parent::__construct([
             'singular' => 'job',
@@ -82,7 +86,7 @@ class JobsListTable extends WP_List_Table
                     $logs[] = sprintf(__('Started processing at %s UTC', 'wp-queue'), $item->started_at->format('Y-m-d H:i:s'));
                 }
                 if ($item->output) {
-                    $logs[] = $item->output;
+                    $logs[] = wpautop($item->output);
                 }
                 if ($item->completed_at) {
                     $logs[] = sprintf(__('Completed at %s UTC', 'wp-queue'), $item->completed_at->format('Y-m-d H:i:s'));
@@ -107,7 +111,11 @@ class JobsListTable extends WP_List_Table
 
     protected function getJobs() : array
     {
-        return $this->jobRepository->query();
+        $this->jobQueryBuilder
+            ->setLimit($this->perPage)
+            ->setOffset((int) ($_GET['paged'] ?? 1) - 1);
+
+        return $this->jobRepository->query($this->jobQueryBuilder);
     }
 
     protected function getJobCount() : int

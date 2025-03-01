@@ -33,7 +33,7 @@ class Worker
         try {
             $this->startJob($nextJob);
 
-            do_action($nextJob->action, $nextJob->arguments);
+            do_action($nextJob->action, $nextJob, $nextJob->arguments);
 
             $this->completeJob($nextJob);
         } catch(Exception $e) {

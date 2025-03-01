@@ -7,4 +7,6 @@
  * @license   MIT
  */
 
-\AshleyFae\WpQueue\WpQueue::instance()->boot();
+if (function_exists('add_action')) {
+    \AshleyFae\WpQueue\WpQueue::instance()->boot();
+}
