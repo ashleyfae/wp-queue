@@ -81,7 +81,7 @@ class WpQueue implements ComponentInterface
             __('Queued Jobs', 'wp-queue'),
             __('Queued Jobs', 'wp-queue'),
             'manage_options',
-            'queued_options',
+            'queued_jobs',
             static function () {
                 return WpQueue::instance()->get(JobsPage::class)->render();
             }
