@@ -9,6 +9,7 @@
 
 namespace AshleyFae\WpQueue\Cron;
 
+use Ashleyfae\WPDB\Exceptions\DatabaseQueryException;
 use AshleyFae\WpQueue\Database\Repositories\QueuedJobRepository;
 use AshleyFae\WpQueue\Enums\JobStatus;
 use AshleyFae\WpQueue\Models\QueuedJob;
@@ -25,24 +26,32 @@ class Worker
 
     public function process(): bool
     {
-        $nextJob = $this->jobRepository->getNextReadyJob();
-        if (! $nextJob) {
+        try {
+            $nextJob = $this->jobRepository->getNextReadyJob();
+            if (! $nextJob) {
+                return false;
+            }
+
+            try {
+                $this->startJob($nextJob);
+
+                do_action($nextJob->action, $nextJob, $nextJob->arguments);
+
+                $this->completeJob($nextJob);
+            } catch (Exception $e) {
+                $this->handleFailure($nextJob, $e);
+            }
+
+            return true;
+        } catch(Exception $e) {
+            error_log('Queue processing error: '.$e->getMessage());
             return false;
         }
-
-        try {
-            $this->startJob($nextJob);
-
-            do_action($nextJob->action, $nextJob, $nextJob->arguments);
-
-            $this->completeJob($nextJob);
-        } catch(Exception $e) {
-            $this->handleFailure($nextJob, $e);
-        }
-
-        return true;
     }
 
+    /**
+     * @throws DatabaseQueryException
+     */
     protected function startJob(QueuedJob $job): void
     {
         $job->status = JobStatus::InProgress;
@@ -51,6 +60,9 @@ class Worker
         $this->jobRepository->save($job);
     }
 
+    /**
+     * @throws DatabaseQueryException
+     */
     protected function completeJob(QueuedJob $job): void
     {
         $job->status = JobStatus::Complete;
