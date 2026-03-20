@@ -9,6 +9,7 @@
 
 namespace AshleyFae\WpQueue\Helpers;
 
+use Ashleyfae\WPDB\Exceptions\DatabaseQueryException;
 use AshleyFae\WpQueue\Database\Repositories\QueuedJobRepository;
 use AshleyFae\WpQueue\DataObjects\PendingJob;
 use AshleyFae\WpQueue\Enums\JobStatus;
@@ -29,6 +30,7 @@ class Jobs
      * Schedules a job to run.
      *
      * @return int ID of the created job.
+     * @throws DatabaseQueryException
      */
     public function scheduleJob(PendingJob $pendingJob): int
     {
@@ -45,6 +47,7 @@ class Jobs
     /**
      * Checks if the provided job is _scheduled_ (exists with status {@see JobStatus::Pending})
      * Fields checked: action name
+     * @throws DatabaseQueryException
      */
     public function isScheduled(PendingJob $pendingJob): bool
     {
@@ -61,6 +64,7 @@ class Jobs
     /**
      * Checks if the provided job is _completed_ (exists with status {@see JobStatus::Complete})
      * Fields checked: action name
+     * @throws DatabaseQueryException
      */
     public function hasCompleted(PendingJob $pendingJob): bool
     {
@@ -77,6 +81,7 @@ class Jobs
     /**
      * Checks if the provided job exists with any status.
      * Fields checked: action name
+     * @throws DatabaseQueryException
      */
     public function exists(PendingJob $pendingJob): bool
     {

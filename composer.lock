@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3a7e52acc5eefbf6c1534fde45de2a45",
+    "content-hash": "bca4f40bbe100cff81d6ca86ed8cdf62",
     "packages": [
         {
             "name": "ashleyfae/laravel-container",
@@ -41,16 +41,16 @@
         },
         {
             "name": "ashleyfae/wp-db",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ashleyfae/wp-db.git",
-                "reference": "9d56377b049e821296f85931dc61181618b2bf8b"
+                "reference": "4759f54bbede32bbf0aaa10d66d2f3e693cc1d85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ashleyfae/wp-db/zipball/9d56377b049e821296f85931dc61181618b2bf8b",
-                "reference": "9d56377b049e821296f85931dc61181618b2bf8b",
+                "url": "https://api.github.com/repos/ashleyfae/wp-db/zipball/4759f54bbede32bbf0aaa10d66d2f3e693cc1d85",
+                "reference": "4759f54bbede32bbf0aaa10d66d2f3e693cc1d85",
                 "shasum": ""
             },
             "require": {
@@ -66,9 +66,9 @@
             "description": "Wrapper for wpdb.",
             "support": {
                 "issues": "https://github.com/ashleyfae/wp-db/issues",
-                "source": "https://github.com/ashleyfae/wp-db/tree/1.1.0"
+                "source": "https://github.com/ashleyfae/wp-db/tree/1.2.0"
             },
-            "time": "2025-02-21T12:07:21+00:00"
+            "time": "2026-03-20T15:21:58+00:00"
         }
     ],
     "packages-dev": [
