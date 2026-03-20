@@ -10,6 +10,7 @@
 namespace AshleyFae\WpQueue\Database\Repositories;
 
 use Ashleyfae\WPDB\DB;
+use Ashleyfae\WPDB\Exceptions\DatabaseQueryException;
 use AshleyFae\WpQueue\Database\Tables\QueuedJobTable;
 use AshleyFae\WpQueue\Enums\JobStatus;
 use AshleyFae\WpQueue\JobQueryBuilder;
@@ -23,6 +24,9 @@ class QueuedJobRepository
 
     }
 
+    /**
+     * @throws DatabaseQueryException
+     */
     public function get(int $id) : QueuedJob
     {
         $row = DB::get_row(
@@ -36,6 +40,9 @@ class QueuedJobRepository
         return new QueuedJob($row);
     }
 
+    /**
+     * @throws DatabaseQueryException
+     */
     public function save(QueuedJob $queuedJob) : QueuedJob
     {
         if (! empty($queuedJob->id)) {
@@ -45,6 +52,9 @@ class QueuedJobRepository
         }
     }
 
+    /**
+     * @throws DatabaseQueryException
+     */
     protected function update(QueuedJob $queuedJob) : QueuedJob
     {
         $queuedJob->updated_at = new DateTime('now');
@@ -60,6 +70,9 @@ class QueuedJobRepository
         return $queuedJob;
     }
 
+    /**
+     * @throws DatabaseQueryException
+     */
     protected function create(QueuedJob $queuedJob) : QueuedJob
     {
         DB::insert(
@@ -81,6 +94,7 @@ class QueuedJobRepository
      * @param  int  $number maximum number of results to retrieve
      *
      * @return QueuedJob[]
+     * @throws DatabaseQueryException
      */
     public function getReadyJobs(int $number = 10) : array
     {
@@ -105,6 +119,7 @@ class QueuedJobRepository
 
     /**
      * Gets the next job to be processed.
+     * @throws DatabaseQueryException
      */
     public function getNextReadyJob() : ?QueuedJob
     {
@@ -123,6 +138,9 @@ class QueuedJobRepository
         return $row ? new QueuedJob($row) : null;
     }
 
+    /**
+     * @throws DatabaseQueryException
+     */
     public function query(JobQueryBuilder $queryBuilder) : array
     {
         $rows = DB::get_results(
